@@ -1,26 +1,124 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: sans-serif;
+  margin: 20px;
+  padding: 0;
+  background-color: #1d1d1d;
+  color: white;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+h4 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+h5 {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+h6 {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+code {
+  font-size: 1.2em;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.square {
+  background: #222222;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 75px;
+  font-weight: bold;
+  line-height: 120px;
+  height: 120px;
+  padding: 0;
+  text-align: center;
+  width: 120px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.caixa-jogo-da-velha {
+  display: grid;
+  width: fit-content;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 0;
+  margin: auto;
+  box-shadow: -10px 10px 0 #0a0a0a;
+}
+
+.jogadas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10;
+  width: 360px;
+  margin: auto;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  button {
+    border: 2px solid rgb(126, 62, 62);
+    border-radius: 6px;
+    padding: 4px 10px;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: -6px 6px 0 #0a0a0a;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    display: flex;
+    gap: 4rem;
+  }
+
+  button:active {
+    transform: translate(-1px, 4px);
+    box-shadow: 2px 2px 0 #0a0a0a;
+  }
+}
+.reset-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+
+  button {
+    font-size: 0.8rem;
+    border: 2px solid rgb(126, 125, 62);
+    padding: 4px 2rem;
+    border-radius: 6px;
+    box-shadow: -6px 6px 0 #0a0a0a;
+    cursor: pointer;
+  }
+
+  button:active {
+    transform: translate(-1px, 4px);
+    box-shadow: 2px 2px 0 #0a0a0a;
+  }
 }
