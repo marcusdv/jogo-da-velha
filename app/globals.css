@@ -86,13 +86,14 @@ code {
   margin: auto;
   margin-top: 1.5rem;
   font-size: 0.9rem;
+
   button {
     border: 2px solid rgb(126, 62, 62);
     border-radius: 6px;
     padding: 4px 10px;
     width: 100%;
     cursor: pointer;
-    box-shadow: -6px 6px 0 #0a0a0a;
+    box-shadow: -4px 6px 0 0px #0a0a0a;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     display: flex;
     gap: 4rem;
@@ -100,7 +101,7 @@ code {
 
   button:active {
     transform: translate(-1px, 4px);
-    box-shadow: 2px 2px 0 #0a0a0a;
+    box-shadow: 0.5px 0.5px 0 #0a0a0a;
   }
 }
 .reset-div {
@@ -119,6 +120,6 @@ code {
 
   button:active {
     transform: translate(-1px, 4px);
-    box-shadow: 2px 2px 0 #0a0a0a;
+    box-shadow: 4px 4px 0 #0a0a0a;
   }
 }
