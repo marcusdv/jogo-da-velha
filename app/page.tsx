@@ -9,7 +9,7 @@ export default function Home() {
   const [playerTurn, setPlayerTurn] = useState<"X" | "O">("X")
   const [gameEnded, setGameEnded] = useState<boolean>(false)
   const [pilha, setPilha] = useState<cellValue[][]>([])
-  const [vencedor, setVencedor] = useState<'X' | 'O'>()
+  const [vencedor, setVencedor] = useState<'X' | 'O' | null>(null)
 
 
 
@@ -23,7 +23,7 @@ export default function Home() {
 
     // verifica se jogo terminou
     const jogoTerminou = checkGame(novoTabuleiro)
-
+    console.log('jogo terminou', jogoTerminou)
 
     if (jogoTerminou.ended) {
       setGameEnded(true)
@@ -37,15 +37,38 @@ export default function Home() {
 
 
 
-  // ! Fazer com que o jogo continue de onde foi clicado'
   function handleJogadasPilhaClick(idx: number): void {
-    if (!gameEnded) return;
-    setTabuleiro(pilha[idx])
+    const novoTabuleiro = pilha[idx]
+    setTabuleiro(novoTabuleiro)
+    const gameEnded = checkGame(novoTabuleiro)
+    setGameEnded(gameEnded.ended)
+    setVencedor(null)
+    setPilha(prev => {
+      return prev.slice(0, idx + 1)
+    })
+
+    setPlayerTurn(() => {
+      // conta quantos deles estão no tabuleiro
+      const contadorObj = novoTabuleiro.reduce((acc, val) => {
+        if (val === 'X') acc.X += 1;
+        if (val === 'O') acc.O += 1;
+        return acc;
+      },
+        { X: 0, O: 0 }
+      )
+      // verifica de quem é a vez
+      if (contadorObj.X === contadorObj.O || contadorObj.X === 0 && contadorObj.O === 0) {
+        return 'X'
+      } else {
+        return 'O'
+      }
+
+    })
   }
 
   function handleResetClick() {
     setGameEnded(false)
-    setVencedor(undefined)
+    setVencedor(null)
     setPilha([])
     setTabuleiro(Array(9).fill(''))
     setPlayerTurn('X')
@@ -55,7 +78,7 @@ export default function Home() {
     <>
       <h1>
         {gameEnded ?
-          (vencedor !== undefined ? ` Winner: ${vencedor} ` : `Empate!`)
+          (vencedor ? ` Winner: ${vencedor} ` : `Empate!`)
           :
           `Turn: ${playerTurn} `
         }
