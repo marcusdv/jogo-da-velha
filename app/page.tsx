@@ -18,6 +18,7 @@ export default function Home() {
 
     const novoTabuleiro = [...tabuleiro];
     novoTabuleiro[indice] = novoValor
+
     setTabuleiro(novoTabuleiro);
     setPilha(prevPilha => [...prevPilha, novoTabuleiro])
 
@@ -27,9 +28,7 @@ export default function Home() {
 
     if (jogoTerminou.ended) {
       setGameEnded(true)
-      if (jogoTerminou.winner) {
-        setVencedor(playerTurn) // playerTurn é quem jogou agora
-      }
+      setVencedor(jogoTerminou.winner) // playerTurn é quem jogou agora
     } else {
       setPlayerTurn(prev => prev === 'X' ? 'O' : 'X');
     }
@@ -40,9 +39,15 @@ export default function Home() {
   function handleJogadasPilhaClick(idx: number): void {
     const novoTabuleiro = pilha[idx]
     setTabuleiro(novoTabuleiro)
-    const gameEnded = checkGame(novoTabuleiro)
-    setGameEnded(gameEnded.ended)
-    setVencedor(null)
+    const jogoTerminou = checkGame(novoTabuleiro)
+    setGameEnded(jogoTerminou.ended)
+
+
+    if (jogoTerminou.ended) {
+      setGameEnded(true)
+      setVencedor(jogoTerminou.winner) // playerTurn é quem jogou agora
+    } 
+    
     setPilha(prev => {
       return prev.slice(0, idx + 1)
     })
@@ -80,8 +85,9 @@ export default function Home() {
         {gameEnded ?
           (vencedor ? ` Winner: ${vencedor} ` : `Empate!`)
           :
-          `Turn: ${playerTurn} `
+          `Turn: ${playerTurn } `
         }
+        
       </h1>
 
       <ul className="caixa-jogo-da-velha">
@@ -102,6 +108,14 @@ export default function Home() {
         }
       </ul>
 
+      {/* RESET */}
+      <div className="reset-div">
+        {pilha.length > 0 &&
+          <button onClick={handleResetClick}>reset</button>
+        }
+      </div>
+
+
       {/* PILHA DE JOGADAS */}
       <ul className="jogadas-lista">
 
@@ -118,11 +132,7 @@ export default function Home() {
 
         }
       </ul>
-      <div className="reset-div">
-        {gameEnded &&
-          <button onClick={handleResetClick}>reset</button>
-        }
-      </div>
+
     </>
   );
 }

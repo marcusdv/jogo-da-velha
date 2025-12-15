@@ -17,5 +17,10 @@ export default function Square({ tabuleiro, posicao, playerTurn, handleSquareCli
     handleSquareClick(posicao, playerTurn)
   }
 
-  return <button onClick={handleClick} className="square">{tabuleiro[posicao]}</button>;
+  return <button
+    onClick={handleClick}
+    className={`square ${tabuleiro[posicao] === 'X' ? 'text-stone-200' : 'text-gray-200'}`}
+  >
+    {tabuleiro[posicao]}
+  </button>;
 }

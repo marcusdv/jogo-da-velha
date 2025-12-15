@@ -2,22 +2,21 @@ import { winningCombinations } from "../winning-combinations/combinations";
 import { cellValue } from "../types/Square";
 
 
-export function checkGame(novoTabuleiro: cellValue[])
-  :
-  {ended: boolean, winner: boolean} {
+export function checkGame(tabuleiro: cellValue[])
+  : { ended: boolean, winner: 'X' | 'O' | null } {
 
   for (const [a, b, c] of winningCombinations) {
     if (
-      novoTabuleiro[a] &&
-      novoTabuleiro[a] === novoTabuleiro[b] &&
-      novoTabuleiro[b] === novoTabuleiro[c]
+      tabuleiro[a] &&
+      tabuleiro[a] === tabuleiro[b] &&
+      tabuleiro[b] === tabuleiro[c]
     ) {
-      return {ended: true, winner: true}; // ✅ Retorna da função checkGame
+      return { ended: true, winner: tabuleiro[a] }; // ✅ Retorna da função checkGame
     }
   }
 
   let someEmpty = false;
-  for (const cell of novoTabuleiro) {
+  for (const cell of tabuleiro) {
     if (cell === '') {
       someEmpty = true;
     }
@@ -25,8 +24,8 @@ export function checkGame(novoTabuleiro: cellValue[])
 
   // sem espaços vazios, o jogo acabou
   if (!someEmpty) {
-    return {ended: true, winner: false}
+    return { ended: true, winner: null }
   }
 
-  return {ended: false, winner: false};
+  return { ended: false, winner: null };
 }
