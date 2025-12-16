@@ -3,12 +3,13 @@ import { useState } from "react";
 import Square from "./components/Square"
 import { cellValue } from './types/Square'
 import { checkGame } from "./rules/checkGame";
+import { calcularProximoJogador } from "./rules/calcularProximoJogador";
 
 export default function Home() {
   const [tabuleiro, setTabuleiro] = useState<cellValue[]>(Array(9).fill(''))
+  const [pilha, setPilha] = useState<cellValue[][]>([])
   const [playerTurn, setPlayerTurn] = useState<"X" | "O">("X")
   const [gameEnded, setGameEnded] = useState<boolean>(false)
-  const [pilha, setPilha] = useState<cellValue[][]>([])
   const [vencedor, setVencedor] = useState<'X' | 'O' | null>(null)
 
 
@@ -19,57 +20,42 @@ export default function Home() {
     const novoTabuleiro = [...tabuleiro];
     novoTabuleiro[indice] = novoValor
 
+    // adicionando ao tabuleiro e a pilha
     setTabuleiro(novoTabuleiro);
     setPilha(prevPilha => [...prevPilha, novoTabuleiro])
 
     // verifica se jogo terminou
     const jogoTerminou = checkGame(novoTabuleiro)
-    console.log('jogo terminou', jogoTerminou)
 
-    if (jogoTerminou.ended) {
+    if (checkGame(novoTabuleiro).ended) {
       setGameEnded(true)
       setVencedor(jogoTerminou.winner) // playerTurn é quem jogou agora
     } else {
-      setPlayerTurn(prev => prev === 'X' ? 'O' : 'X');
+      setPlayerTurn(calcularProximoJogador(novoTabuleiro))
     }
   }
-
-
 
   function handleJogadasPilhaClick(idx: number): void {
     const novoTabuleiro = pilha[idx]
     setTabuleiro(novoTabuleiro)
+
     const jogoTerminou = checkGame(novoTabuleiro)
     setGameEnded(jogoTerminou.ended)
 
 
     if (jogoTerminou.ended) {
       setGameEnded(true)
-      setVencedor(jogoTerminou.winner) // playerTurn é quem jogou agora
-    } 
-    
+      setVencedor(jogoTerminou.winner)
+    }
+
     setPilha(prev => {
       return prev.slice(0, idx + 1)
     })
 
-    setPlayerTurn(() => {
-      // conta quantos deles estão no tabuleiro
-      const contadorObj = novoTabuleiro.reduce((acc, val) => {
-        if (val === 'X') acc.X += 1;
-        if (val === 'O') acc.O += 1;
-        return acc;
-      },
-        { X: 0, O: 0 }
-      )
-      // verifica de quem é a vez
-      if (contadorObj.X === contadorObj.O || contadorObj.X === 0 && contadorObj.O === 0) {
-        return 'X'
-      } else {
-        return 'O'
-      }
-
-    })
+    setPlayerTurn(calcularProximoJogador(novoTabuleiro))
   }
+
+
 
   function handleResetClick() {
     setGameEnded(false)
@@ -79,15 +65,16 @@ export default function Home() {
     setPlayerTurn('X')
   }
 
+
   return (
     <>
       <h1>
         {gameEnded ?
           (vencedor ? ` Winner: ${vencedor} ` : `Empate!`)
           :
-          `Turn: ${playerTurn } `
+          `Turn: ${playerTurn} `
         }
-        
+
       </h1>
 
       <ul className="caixa-jogo-da-velha">

@@ -115,12 +115,13 @@ code {
     border: 2px solid rgb(126, 125, 62);
     padding: 4px 2rem;
     border-radius: 6px;
-    box-shadow: -6px 6px 0 #0a0a0a;
+    box-shadow: -4px 6px 0 0px #0a0a0a;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
     cursor: pointer;
   }
 
   button:active {
     transform: translate(-1px, 4px);
-    box-shadow: 4px 4px 0 #0a0a0a;
+    box-shadow: 0.5px 0.5px 0 #0a0a0a;
   }
 }
