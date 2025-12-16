@@ -17,7 +17,7 @@ export function checkGame(tabuleiro: cellValue[])
 
   let someEmpty = false;
   for (const cell of tabuleiro) {
-    if (cell === '') {
+    if (cell === null) {
       someEmpty = true;
     }
   }

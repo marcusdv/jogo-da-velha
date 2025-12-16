@@ -2,7 +2,7 @@
 import { cellValue } from "../types/Square"
 
 interface SquareProps {
-  tabuleiro: cellValue[];
+  value: cellValue;
   posicao: number;
   playerTurn: cellValue;
   handleSquareClick: (indice: number, novoValor: cellValue) => void;
@@ -10,17 +10,17 @@ interface SquareProps {
 }
 
 
-export default function Square({ tabuleiro, posicao, playerTurn, handleSquareClick, gameEnded, }: SquareProps) {
+export default function Square({ value, posicao, playerTurn, handleSquareClick, gameEnded }: SquareProps) {
   function handleClick() {
     if (gameEnded) return;
-    if (tabuleiro[posicao]) return;
+    if (value) return; // já tem valor
     handleSquareClick(posicao, playerTurn)
   }
 
   return <button
     onClick={handleClick}
-    className={`square ${tabuleiro[posicao] === 'X' ? 'text-stone-200' : 'text-gray-200'}`}
+    className={`square ${value === 'X' ? 'text-blue-300' : value === 'O' ? 'text-pink-300' : ''}`}
   >
-    {tabuleiro[posicao]}
+    {value}
   </button>;
 }

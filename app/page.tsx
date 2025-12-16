@@ -6,15 +6,14 @@ import { checkGame } from "./rules/checkGame";
 import { calcularProximoJogador } from "./rules/calcularProximoJogador";
 
 export default function Home() {
-  const [tabuleiro, setTabuleiro] = useState<cellValue[]>(Array(9).fill(''))
+  const [tabuleiro, setTabuleiro] = useState<cellValue[]>(Array(9).fill(null))
   const [pilha, setPilha] = useState<cellValue[][]>([])
   const [playerTurn, setPlayerTurn] = useState<"X" | "O">("X")
   const [gameEnded, setGameEnded] = useState<boolean>(false)
   const [vencedor, setVencedor] = useState<'X' | 'O' | null>(null)
 
 
-
-  function handleSquareClick(indice: number, novoValor: cellValue): void {
+  const handleSquareClick = (indice: number, novoValor: cellValue): void => {
     if (gameEnded || tabuleiro[indice]) return;
 
     const novoTabuleiro = [...tabuleiro];
@@ -61,7 +60,7 @@ export default function Home() {
     setGameEnded(false)
     setVencedor(null)
     setPilha([])
-    setTabuleiro(Array(9).fill(''))
+    setTabuleiro(Array(9).fill(null))
     setPlayerTurn('X')
   }
 
@@ -84,8 +83,8 @@ export default function Home() {
               key={i}
             >
               <Square
-                tabuleiro={tabuleiro}
                 posicao={i}
+                value={tabuleiro[i]}
                 handleSquareClick={handleSquareClick}
                 playerTurn={playerTurn}
                 gameEnded={gameEnded}

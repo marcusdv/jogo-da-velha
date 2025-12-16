@@ -1,1 +1,1 @@
-export type cellValue = "" | "X" | "O"
+export type cellValue = null | "X" | "O"
