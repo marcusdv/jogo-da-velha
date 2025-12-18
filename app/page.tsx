@@ -58,25 +58,17 @@ export default function Home() {
       <ul className="caixa-jogo-da-velha">
         {
           tabuleiro.map((_, i) => {
-            let winnerSquareStyle = '';
-
-            if (vencedor) {
-              if (checkGame(tabuleiro).combination?.includes(i)) {
-                winnerSquareStyle = 'bg-teal-950';
-              }
-            }
-
+            const quadradoVencedor = vencedor && resultado.combination && resultado.combination.includes(i)
 
             return <li
               key={i}
-              className={` ${winnerSquareStyle} `}
+              className={` ${quadradoVencedor && 'bg-teal-950'} `}
             >
               <Square
                 posicao={i}
                 value={tabuleiro[i]}
                 handleSquareClick={handleSquareClick}
                 playerTurn={playerTurn}
-                gameEnded={gameEnded}
               />
             </li>
           })

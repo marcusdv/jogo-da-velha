@@ -6,13 +6,11 @@ interface SquareProps {
   posicao: number;
   playerTurn: cellValue;
   handleSquareClick: (indice: number, novoValor: cellValue) => void;
-  gameEnded: boolean
 }
 
 
-export default function Square({ value, posicao, playerTurn, handleSquareClick, gameEnded }: SquareProps) {
+export default function Square({ value, posicao, playerTurn, handleSquareClick }: SquareProps) {
   function handleClick() {
-    if (gameEnded) return;
     if (value) return; // já tem valor
     handleSquareClick(posicao, playerTurn)
   }
