@@ -3,7 +3,7 @@ import { cellValue } from "../types/Square";
 
 
 export function checkGame(tabuleiro: cellValue[])
-  : { ended: boolean, winner: 'X' | 'O' | null } {
+  : { ended: boolean, winner: 'X' | 'O' | null, combination: number[] | null } {
 
   for (const [a, b, c] of winningCombinations) {
     if (
@@ -11,7 +11,7 @@ export function checkGame(tabuleiro: cellValue[])
       tabuleiro[a] === tabuleiro[b] &&
       tabuleiro[b] === tabuleiro[c]
     ) {
-      return { ended: true, winner: tabuleiro[a] }; // ✅ Retorna da função checkGame
+      return { ended: true, winner: tabuleiro[a], combination: [a, b, c] }; // ✅ Retorna da função checkGame
     }
   }
 
@@ -24,8 +24,8 @@ export function checkGame(tabuleiro: cellValue[])
 
   // sem espaços vazios, o jogo acabou
   if (!someEmpty) {
-    return { ended: true, winner: null }
+    return { ended: true, winner: null, combination: null }
   }
 
-  return { ended: false, winner: null };
+  return { ended: false, winner: null, combination: null };
 }

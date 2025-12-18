@@ -19,7 +19,7 @@ export default function Square({ value, posicao, playerTurn, handleSquareClick, 
 
   return <button
     onClick={handleClick}
-    className={`square ${value === 'X' ? 'text-blue-300' : value === 'O' ? 'text-pink-300' : ''}`}
+    className={`square ${value === 'X' ? 'text-blue-300' : value === 'O' ? 'text-pink-300' : ''} `}
   >
     {value}
   </button>;

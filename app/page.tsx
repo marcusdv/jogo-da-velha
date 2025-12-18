@@ -1,67 +1,46 @@
 'use client'
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Square from "./components/Square"
 import { cellValue } from './types/Square'
 import { checkGame } from "./rules/checkGame";
-import { calcularProximoJogador } from "./rules/calcularProximoJogador";
 
 export default function Home() {
   const [tabuleiro, setTabuleiro] = useState<cellValue[]>(Array(9).fill(null))
-  const [pilha, setPilha] = useState<cellValue[][]>([])
-  const [playerTurn, setPlayerTurn] = useState<"X" | "O">("X")
-  const [gameEnded, setGameEnded] = useState<boolean>(false)
-  const [vencedor, setVencedor] = useState<'X' | 'O' | null>(null)
+  const [historico, setHistorico] = useState<cellValue[][]>([])
+
+  // Calcular diretamente sem estados separados
+  const playerTurn = historico.length % 2 === 0 ? 'X' : 'O'; // X sempre joga quando há par jogadas na pilha
+  const resultado = useMemo(() => checkGame(tabuleiro), [tabuleiro]);
+  const gameEnded = resultado.ended;
+  const vencedor = resultado.winner;
 
 
   const handleSquareClick = (indice: number, novoValor: cellValue): void => {
     if (gameEnded || tabuleiro[indice]) return;
 
+    // criando novo tabuleiro com a jogada
     const novoTabuleiro = [...tabuleiro];
     novoTabuleiro[indice] = novoValor
 
-    // adicionando ao tabuleiro e a pilha
+    // adicionando ao tabuleiro e a historico
     setTabuleiro(novoTabuleiro);
-    setPilha(prevPilha => [...prevPilha, novoTabuleiro])
+    setHistorico(prevPilha => [...prevPilha, novoTabuleiro])
 
-    // verifica se jogo terminou
-    const jogoTerminou = checkGame(novoTabuleiro)
-
-    if (checkGame(novoTabuleiro).ended) {
-      setGameEnded(true)
-      setVencedor(jogoTerminou.winner) // playerTurn é quem jogou agora
-    } else {
-      setPlayerTurn(calcularProximoJogador(novoTabuleiro))
-    }
   }
 
   function handleJogadasPilhaClick(idx: number): void {
-    const novoTabuleiro = pilha[idx]
+    const novoTabuleiro = historico[idx]
     setTabuleiro(novoTabuleiro)
 
-    const jogoTerminou = checkGame(novoTabuleiro)
-    setGameEnded(jogoTerminou.ended)
-
-
-    if (jogoTerminou.ended) {
-      setGameEnded(true)
-      setVencedor(jogoTerminou.winner)
-    }
-
-    setPilha(prev => {
+    setHistorico(prev => {
       return prev.slice(0, idx + 1)
     })
-
-    setPlayerTurn(calcularProximoJogador(novoTabuleiro))
   }
 
 
-
   function handleResetClick() {
-    setGameEnded(false)
-    setVencedor(null)
-    setPilha([])
+    setHistorico([])
     setTabuleiro(Array(9).fill(null))
-    setPlayerTurn('X')
   }
 
 
@@ -79,8 +58,18 @@ export default function Home() {
       <ul className="caixa-jogo-da-velha">
         {
           tabuleiro.map((_, i) => {
+            let winnerSquareStyle = '';
+
+            if (vencedor) {
+              if (checkGame(tabuleiro).combination?.includes(i)) {
+                winnerSquareStyle = 'bg-teal-950';
+              }
+            }
+
+
             return <li
               key={i}
+              className={` ${winnerSquareStyle} `}
             >
               <Square
                 posicao={i}
@@ -96,7 +85,7 @@ export default function Home() {
 
       {/* RESET */}
       <div className="reset-div">
-        {pilha.length > 0 &&
+        {historico.length > 0 &&
           <button onClick={handleResetClick}>reset</button>
         }
       </div>
@@ -107,7 +96,7 @@ export default function Home() {
 
         {
 
-          pilha.map((arr, idx) => {
+          historico.map((arr, idx) => {
             return <li key={idx}>
               <button onClick={() => handleJogadasPilhaClick(idx)}>
                 <span>{idx + 1}</span>
